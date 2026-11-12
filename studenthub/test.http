@@ -1,0 +1,180 @@
+### Créer un événement limité
+
+POST http://localhost:8080/api/events
+Content-Type: application/json
+
+{
+  "title": "Formation Spring Boot",
+  "description": "Apprendre à créer des API robustes.",
+  "eventDate": "2026-11-20",
+  "eventTime": "14:30:00",
+  "location": "Salle Info 1",
+  "category": "CONFERENCE",
+  "maxCapacity": 2,
+  "organizer": {
+    "id": 1
+  }
+}
+###
+
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+{
+  "fullName": "Test Securite",
+  "email": "test.secu@student.uemf.ma",
+  "password": "password123",
+  "role": "STUDENT"
+}
+###
+
+POST http://localhost:8080/api/registrations
+Content-Type: application/json
+
+{
+  "user": {
+    "id": 2
+  },
+  "event": {
+    "id": 1
+  }
+  
+}
+
+### Créer Brahim (Devrait recevoir l'ID 3)
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+{
+  "fullName": "Brahim Etudiant",
+  "email": "brahim@student.uemf.ma",
+  "password": "password123",
+  "role": "STUDENT"
+}
+
+### Créer Sara (Devrait recevoir l'ID 4)
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+{
+  "fullName": "Sara Etudiant",
+  "email": "sara@student.uemf.ma",
+  "password": "password123",
+  "role": "STUDENT"
+}
+
+### Inscription Ahmed (ID 2) à la Formation (ID 2)
+POST http://localhost:8080/api/registrations
+Content-Type: application/json
+
+{
+  "user": { "id": 2 },
+  "event": { "id": 2 }
+}
+
+### Inscription Brahim (ID 3) à la Formation (ID 2)
+POST http://localhost:8080/api/registrations
+Content-Type: application/json
+
+{
+  "user": { "id": 3 },
+  "event": { "id": 2 }
+}
+
+### Inscription Sara (ID 4) -> Doit être bloquée !
+POST http://localhost:8080/api/registrations
+Content-Type: application/json
+
+{
+  "user": { "id": 4 },
+  "event": { "id": 2 }
+}
+
+### Filtrer les événements (Uniquement les conférences)
+GET http://localhost:8080/api/events/filter?category=CONFERENCE
+
+### Créer un nouveau club
+POST http://localhost:8080/api/clubs
+Content-Type: application/json
+
+{
+  "name": "Club de Robotique",
+  "description": "Le club officiel des passionnés de robotique et d'IA de l'UEMF.",
+  "president": {
+    "id": 1
+  }
+}
+### Récupérer la liste de tous les clubs
+GET http://localhost:8080/api/clubs
+
+### Publier une annonce
+POST http://localhost:8080/api/announcements
+Content-Type: application/json
+
+{
+  "title": "Fermeture de la bibliothèque",
+  "content": "La bibliothèque sera exceptionnellement fermée ce vendredi pour inventaire. Merci de votre compréhension.",
+  "author": {
+    "id": 1
+  }
+}
+
+###
+### Récupérer le fil d'actualité (Écran d'accueil)
+GET http://localhost:8080/api/announcements
+
+### Ajouter le contact de la scolarité
+POST http://localhost:8080/api/campus-info
+Content-Type: application/json
+
+{
+  "serviceName": "Scolarité Ingénierie (IA)",
+  "email": "scolarite@uemf.ma",
+  "phone": "05 32 11 22 33",
+  "location": "Bâtiment Principal, RDC",
+  "category": "ADMINISTRATION"
+}
+
+### Ajouter le contact du logement
+POST http://localhost:8080/api/campus-info
+Content-Type: application/json
+
+{
+  "serviceName": "Administration UVillage",
+  "email": "contact@uvillage.ma",
+  "phone": "05 32 44 55 66",
+  "location": "Accueil Résidence",
+  "category": "LOGEMENT"
+}
+
+###
+### Récupérer l'annuaire complet
+GET http://localhost:8080/api/campus-info
+
+### Envoyer un rappel à l'étudiant ID 2
+POST http://localhost:8080/api/notifications
+Content-Type: application/json
+
+{
+  "message": "Rappel : Votre Formation Spring Boot commence demain à 14h30 en Salle Info 1.",
+  "user": {
+    "id": 2
+  }
+}
+
+###
+### Récupérer les notifications de l'étudiant ID 2
+GET http://localhost:8080/api/notifications/user/2
+
+### Se connecter pour obtenir le Token JWT
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "test.secu@student.uemf.ma",
+  "password": "password123"
+}
+
+### Récupérer les événements (Accès Sécurisé)
+GET http://localhost:8080/api/events
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0LnNlY3VAc3R1ZGVudC51ZW1mLm1hIiwiaWF0IjoxNzk0NTE4NTM3LCJleHAiOjE3OTQ2MDQ5Mzd9.BXr1G-6XTczgAO72CeJyhCxjFNOI_wYh2b-17yCmkoU
